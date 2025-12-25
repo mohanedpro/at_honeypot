@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HR Master - Recruitment</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#00B341", // Green
+              secondary: "#00509A", // Blue
+              "secondary-dark": "#003e7a",
+              "accent-blue": "#E0F2FE",
+              "accent-green": "#D4EDDA",
+              "text-primary": "#212529",
+              "text-secondary": "#6C757D",
+              "background-light": "#F8F9FA",
+              "background-dark": "#111827",
+              "card-light": "#ffffff",
+              "card-dark": "#1f2937",
+              "alert-red": "#ef4444",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      body {
+        height: 100vh;
+        overflow: hidden;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display antialiased h-screen flex flex-col text-text-primary dark:text-gray-200"
+  >
+    <nav class="bg-secondary text-white shadow-lg sticky top-0 z-50">
+      <div class="px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <div class="bg-white p-1 rounded-lg">
+            <img
+              alt="Algeria Telecom Logo"
+              class="h-10 w-auto object-contain"
+              src="/img/logo2.svg"
+            />
+          </div>
+          <div>
+            <h1 class="font-bold text-xl leading-tight tracking-tight">
+              HR Master
+            </h1>
+            <p
+              class="text-[10px] opacity-90 uppercase tracking-widest font-medium"
+            >
+              Algeria Telecom
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="relative p-1 rounded-full hover:bg-white/10 transition"
+          >
+            <span class="material-symbols-outlined text-2xl"
+              >notifications</span
+            >
+            <span
+              class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border border-secondary"
+            ></span>
+          </button>
+          <div
+            class="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center border border-white/30"
+          >
+            <span class="font-bold text-sm">AD</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="flex-1 flex overflow-hidden">
+      <div class="flex-1 p-6 flex flex-col gap-6 overflow-hidden">
+        <div class="grid grid-cols-4 gap-6 flex-none h-32">
+          <div
+            class="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border-l-4 border-secondary flex flex-col justify-between"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <span
+                  class="text-xs text-text-secondary font-semibold uppercase tracking-wide"
+                  >Open Positions</span
+                >
+                <h3
+                  class="text-3xl font-bold text-text-primary dark:text-white mt-2"
+                >
+                  12
+                </h3>
+              </div>
+              <div class="p-2 bg-accent-blue rounded-lg">
+                <span class="material-symbols-outlined text-secondary text-2xl"
+                  >work</span
+                >
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <span
+                class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-700"
+                >+2 new</span
+              >
+              <span class="text-[10px] text-text-secondary">this week</span>
+            </div>
+          </div>
+          <div
+            class="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border-l-4 border-primary flex flex-col justify-between"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <span
+                  class="text-xs text-text-secondary font-semibold uppercase tracking-wide"
+                  >Total Applicants</span
+                >
+                <h3
+                  class="text-3xl font-bold text-text-primary dark:text-white mt-2"
+                >
+                  148
+                </h3>
+              </div>
+              <div class="p-2 bg-accent-green rounded-lg">
+                <span class="material-symbols-outlined text-primary text-2xl"
+                  >group_add</span
+                >
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="material-symbols-outlined text-xs text-primary"
+                >trending_up</span
+              >
+              <span class="text-[10px] text-text-secondary"
+                >15% increase vs last month</span
+              >
+            </div>
+          </div>
+          <div
+            class="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border-l-4 border-orange-400 flex flex-col justify-between"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <span
+                  class="text-xs text-text-secondary font-semibold uppercase tracking-wide"
+                  >Time to Hire</span
+                >
+                <h3
+                  class="text-3xl font-bold text-text-primary dark:text-white mt-2"
+                >
+                  18
+                  <span class="text-lg font-medium text-text-secondary"
+                    >days</span
+                  >
+                </h3>
+              </div>
+              <div class="p-2 bg-orange-100 rounded-lg">
+                <span class="material-symbols-outlined text-orange-500 text-2xl"
+                  >timelapse</span
+                >
+              </div>
+            </div>
+            <div
+              class="w-full bg-gray-100 rounded-full h-1.5 mt-2 dark:bg-gray-700"
+            >
+              <div
+                class="bg-orange-400 h-1.5 rounded-full"
+                style="width: 65%"
+              ></div>
+            </div>
+            <span class="text-[10px] text-text-secondary mt-1"
+              >Target: 21 days</span
+            >
+          </div>
+          <div
+            class="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border-l-4 border-purple-500 flex flex-col justify-between"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <span
+                  class="text-xs text-text-secondary font-semibold uppercase tracking-wide"
+                  >Interviews Today</span
+                >
+                <h3
+                  class="text-3xl font-bold text-text-primary dark:text-white mt-2"
+                >
+                  5
+                </h3>
+              </div>
+              <div class="p-2 bg-purple-100 rounded-lg">
+                <span class="material-symbols-outlined text-purple-600 text-2xl"
+                  >event</span
+                >
+              </div>
+            </div>
+            <div class="flex -space-x-2 overflow-hidden mt-2">
+              <img
+                alt="Candidate"
+                class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-800"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMwI-wNdsU_vHKf1OhA7Ab5xLkKS6DeeslC-qrruPrN1DjIAZn8fA_n0LjLwe-F1QVoF4u6zlu6rC-mkXQriLwKpX6Nfj3bON4K_X8tsxiDiXPqMYlq03y9zZHRTemEh9mhwEtrfeANFkLQHNTk-7RDJqqIjzf_bODw7hgbFARkhji44BRnRtMUV3wdohv9JvDcExhU7JQlColjbV9dB6L5PUTw368LPKxEhUso6f65XudZg_GCr6ZE-L-VVslAuqxZxqQB9NFWiI"
+              />
+              <img
+                alt="Candidate"
+                class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-800"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKwgUDo3mHjAUB_-ybBpC4K7Xy3DOmg0FKdYbOIkEu_c_NlLLnYD5m7H5k6SyKawrwYqQAaafLXGE0WGMngGzHB6o1ChnKB5srHJl126WIBXaQXOylBGUi_TPuD2cysXzsv44k4-vZhsWPvTucJsHjVuQnl98Ol-ZvZemHRAQxIlYanF-_iJuCd9GomYx6MADKxAXwt5roDEt9pSRcCKLgINxfVi46HS-KYNy42D3pyETg307ifMfxLxKlre1_NmBfsuuC6Z2QsyM"
+              />
+              <div
+                class="h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-800 bg-gray-100 flex items-center justify-center text-[9px] text-text-secondary font-medium"
+              >
+                +3
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-1 flex gap-6 min-h-0">
+          <div
+            class="w-1/3 bg-white dark:bg-card-dark rounded-xl shadow-sm flex flex-col overflow-hidden"
+          >
+            <div
+              class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50"
+            >
+              <h3 class="font-bold text-text-primary dark:text-gray-200">
+                Active Job Postings
+              </h3>
+              <button
+                class="text-xs font-semibold text-secondary hover:underline"
+              >
+                View All
+              </button>
+            </div>
+            <div class="overflow-y-auto flex-1 p-2 space-y-2 hide-scrollbar">
+              <div
+                class="p-3 rounded-lg border border-secondary bg-accent-blue/30 cursor-pointer transition"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4 class="font-bold text-secondary text-sm">
+                    Network Engineer
+                  </h4>
+                  <span
+                    class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    >Active</span
+                  >
+                </div>
+                <p class="text-xs text-text-secondary mb-3">
+                  Engineering Dept • Algiers HQ
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-1 text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">group</span>
+                    <span>32 Applicants</span>
+                  </div>
+                  <span class="font-medium text-secondary">Urgent</span>
+                </div>
+              </div>
+              <div
+                class="p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 cursor-pointer transition"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4
+                    class="font-bold text-text-primary dark:text-gray-200 text-sm"
+                  >
+                    Customer Support Lead
+                  </h4>
+                  <span
+                    class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    >Active</span
+                  >
+                </div>
+                <p class="text-xs text-text-secondary mb-3">
+                  CS Dept • Oran Branch
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-1 text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">group</span>
+                    <span>45 Applicants</span>
+                  </div>
+                  <span class="text-text-secondary">Posted 3d ago</span>
+                </div>
+              </div>
+              <div
+                class="p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 cursor-pointer transition"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4
+                    class="font-bold text-text-primary dark:text-gray-200 text-sm"
+                  >
+                    HR Specialist
+                  </h4>
+                  <span
+                    class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    >Draft</span
+                  >
+                </div>
+                <p class="text-xs text-text-secondary mb-3">
+                  Human Resources • Algiers HQ
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-1 text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">edit</span>
+                    <span>In Review</span>
+                  </div>
+                  <span class="text-text-secondary">Last edit 2h ago</span>
+                </div>
+              </div>
+              <div
+                class="p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 cursor-pointer transition"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4
+                    class="font-bold text-text-primary dark:text-gray-200 text-sm"
+                  >
+                    Fiber Technician
+                  </h4>
+                  <span
+                    class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    >Active</span
+                  >
+                </div>
+                <p class="text-xs text-text-secondary mb-3">
+                  Technical Dept • Constantine
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-1 text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">group</span>
+                    <span>18 Applicants</span>
+                  </div>
+                  <span class="text-text-secondary">Posted 1w ago</span>
+                </div>
+              </div>
+              <div
+                class="p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 cursor-pointer transition"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4
+                    class="font-bold text-text-primary dark:text-gray-200 text-sm"
+                  >
+                    System Admin
+                  </h4>
+                  <span
+                    class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold"
+                    >Active</span
+                  >
+                </div>
+                <p class="text-xs text-text-secondary mb-3">
+                  IT Dept • Algiers HQ
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-1 text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">group</span>
+                    <span>24 Applicants</span>
+                  </div>
+                  <span class="text-text-secondary">Posted 4d ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="w-2/3 bg-white dark:bg-card-dark rounded-xl shadow-sm flex flex-col overflow-hidden"
+          >
+            <div
+              class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50"
+            >
+              <div class="flex items-center gap-3">
+                <h3 class="font-bold text-text-primary dark:text-gray-200">
+                  Recruitment Pipeline
+                </h3>
+                <span
+                  class="text-xs text-secondary font-medium bg-accent-blue px-2 py-0.5 rounded border border-blue-100"
+                  >Network Engineer</span
+                >
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="flex items-center gap-1 text-xs font-medium text-text-secondary hover:text-primary transition bg-white border border-gray-200 px-2 py-1 rounded"
+                >
+                  <span class="material-symbols-outlined text-sm"
+                    >filter_list</span
+                  >
+                  Filter
+                </button>
+                <button
+                  class="flex items-center gap-1 text-xs font-medium text-white bg-secondary hover:bg-secondary-dark transition px-3 py-1 rounded"
+                >
+                  <span class="material-symbols-outlined text-sm">add</span> Add
+                  Candidate
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex-1 overflow-x-auto p-4 flex gap-4 min-h-0 bg-gray-50 dark:bg-gray-900/50"
+            >
+              <div class="flex-1 min-w-[200px] flex flex-col h-full">
+                <div class="flex items-center justify-between mb-3 px-1">
+                  <span class="text-xs font-bold text-text-secondary uppercase"
+                    >Applied
+                    <span
+                      class="ml-1 bg-gray-200 text-gray-600 px-1.5 rounded-full text-[10px]"
+                      >12</span
+                    ></span
+                  >
+                  <div
+                    class="h-1 w-full max-w-[40px] bg-blue-400 rounded-full"
+                  ></div>
+                </div>
+                <div
+                  class="flex-1 overflow-y-auto space-y-2 pr-1 hide-scrollbar"
+                >
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-blue-400 group"
+                  >
+                    <h5
+                      class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                    >
+                      Amine K.
+                    </h5>
+                    <p class="text-[10px] text-text-secondary mt-0.5">
+                      Applied 2h ago
+                    </p>
+                    <div class="mt-2 flex gap-1">
+                      <span
+                        class="text-[9px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-500"
+                        >CV.pdf</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-blue-400 group"
+                  >
+                    <h5
+                      class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                    >
+                      Sara B.
+                    </h5>
+                    <p class="text-[10px] text-text-secondary mt-0.5">
+                      Applied 5h ago
+                    </p>
+                    <div class="mt-2 flex gap-1">
+                      <span
+                        class="text-[9px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-500"
+                        >Portfolio</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-blue-400 group"
+                  >
+                    <h5
+                      class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                    >
+                      Karim M.
+                    </h5>
+                    <p class="text-[10px] text-text-secondary mt-0.5">
+                      Applied 1d ago
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-[200px] flex flex-col h-full">
+                <div class="flex items-center justify-between mb-3 px-1">
+                  <span class="text-xs font-bold text-text-secondary uppercase"
+                    >Shortlisted
+                    <span
+                      class="ml-1 bg-gray-200 text-gray-600 px-1.5 rounded-full text-[10px]"
+                      >8</span
+                    ></span
+                  >
+                  <div
+                    class="h-1 w-full max-w-[40px] bg-yellow-400 rounded-full"
+                  ></div>
+                </div>
+                <div
+                  class="flex-1 overflow-y-auto space-y-2 pr-1 hide-scrollbar"
+                >
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-yellow-400 group"
+                  >
+                    <div class="flex justify-between items-start">
+                      <h5
+                        class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                      >
+                        Nadia F.
+                      </h5>
+                      <span
+                        class="text-[10px] font-bold text-yellow-600 bg-yellow-50 px-1 rounded"
+                        >4.5/5</span
+                      >
+                    </div>
+                    <p class="text-[10px] text-text-secondary mt-0.5">
+                      Experience: 5 yrs
+                    </p>
+                    <div class="mt-2 flex gap-2">
+                      <button
+                        class="text-[10px] text-secondary font-medium hover:underline"
+                      >
+                        Schedule Interview
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-yellow-400 group"
+                  >
+                    <div class="flex justify-between items-start">
+                      <h5
+                        class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                      >
+                        Yacine D.
+                      </h5>
+                      <span
+                        class="text-[10px] font-bold text-yellow-600 bg-yellow-50 px-1 rounded"
+                        >4.2/5</span
+                      >
+                    </div>
+                    <p class="text-[10px] text-text-secondary mt-0.5">
+                      Experience: 3 yrs
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-[200px] flex flex-col h-full">
+                <div class="flex items-center justify-between mb-3 px-1">
+                  <span class="text-xs font-bold text-text-secondary uppercase"
+                    >Interview
+                    <span
+                      class="ml-1 bg-gray-200 text-gray-600 px-1.5 rounded-full text-[10px]"
+                      >5</span
+                    ></span
+                  >
+                  <div
+                    class="h-1 w-full max-w-[40px] bg-purple-400 rounded-full"
+                  ></div>
+                </div>
+                <div
+                  class="flex-1 overflow-y-auto space-y-2 pr-1 hide-scrollbar"
+                >
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-purple-400 group"
+                  >
+                    <h5
+                      class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                    >
+                      Farid L.
+                    </h5>
+                    <div
+                      class="flex items-center gap-1 mt-1 text-purple-600 bg-purple-50 px-2 py-1 rounded w-fit"
+                    >
+                      <span class="material-symbols-outlined text-[10px]"
+                        >calendar_month</span
+                      >
+                      <span class="text-[9px] font-semibold">Today, 14:00</span>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-purple-400 group"
+                  >
+                    <h5
+                      class="text-sm font-bold text-text-primary dark:text-white group-hover:text-secondary"
+                    >
+                      Leila H.
+                    </h5>
+                    <div
+                      class="flex items-center gap-1 mt-1 text-text-secondary bg-gray-50 px-2 py-1 rounded w-fit"
+                    >
+                      <span class="material-symbols-outlined text-[10px]"
+                        >check_circle</span
+                      >
+                      <span class="text-[9px] font-medium"
+                        >Tech Round Passed</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-[200px] flex flex-col h-full">
+                <div class="flex items-center justify-between mb-3 px-1">
+                  <span class="text-xs font-bold text-text-secondary uppercase"
+                    >Hired
+                    <span
+                      class="ml-1 bg-gray-200 text-gray-600 px-1.5 rounded-full text-[10px]"
+                      >2</span
+                    ></span
+                  >
+                  <div
+                    class="h-1 w-full max-w-[40px] bg-primary rounded-full"
+                  ></div>
+                </div>
+                <div
+                  class="flex-1 overflow-y-auto space-y-2 pr-1 hide-scrollbar"
+                >
+                  <div
+                    class="bg-white dark:bg-card-dark p-3 rounded shadow-sm border border-gray-100 hover:border-secondary cursor-pointer border-l-4 border-l-primary group opacity-80 hover:opacity-100"
+                  >
+                    <div class="flex items-center gap-2 mb-1">
+                      <span
+                        class="material-symbols-outlined text-primary text-base"
+                        >verified</span
+                      >
+                      <h5
+                        class="text-sm font-bold text-text-primary dark:text-white"
+                      >
+                        Sofiane A.
+                      </h5>
+                    </div>
+                    <p class="text-[10px] text-text-secondary">
+                      Offer Accepted
+                    </p>
+                    <p class="text-[10px] text-primary mt-1 font-medium">
+                      Starts: 01 Nov
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-white dark:bg-card-dark border-t border-gray-200 dark:border-gray-700 pb-safe z-50"
+    >
+      <div class="grid grid-cols-5 items-center pt-2 pb-2">
+        <button
+          class="flex flex-col items-center p-1 text-secondary gap-1"
+          onclick="window.location.href='/admin/dashboard'"
+        >
+          <span class="material-symbols-outlined text-2xl">dashboard</span>
+          <span class="text-[9px] font-semibold">Dashboard</span>
+        </button>
+        <button
+          class="flex flex-col items-center p-1 text-text-secondary hover:text-secondary dark:hover:text-blue-400 gap-1 transition-colors"
+          onclick="window.location.href='/admin/employees'"
+        >
+          <span class="material-symbols-outlined text-2xl">groups</span>
+          <span class="text-[9px] font-medium">Employees</span>
+        </button>
+        <button
+          class="flex flex-col items-center p-1 text-text-secondary hover:text-secondary dark:hover:text-blue-400 gap-1 transition-colors"
+          onclick="window.location.href='/admin/hiring'"
+        >
+          <span class="material-symbols-outlined text-2xl">person_search</span>
+          <span class="text-[9px] font-medium">Hiring</span>
+        </button>
+        <button
+          class="flex flex-col items-center p-1 text-text-secondary hover:text-secondary dark:hover:text-blue-400 gap-1 transition-colors"
+          onclick="window.location.href='/admin/policy'"
+        >
+          <span class="material-symbols-outlined text-2xl">policy</span>
+          <span class="text-[9px] font-medium">Policies</span>
+        </button>
+        <button
+          class="flex flex-col items-center p-1 text-text-secondary hover:text-secondary dark:hover:text-blue-400 gap-1 transition-colors"
+          onclick="window.location.href='/admin/settings'"
+        >
+          <span class="material-symbols-outlined text-2xl">settings</span>
+          <span class="text-[9px] font-medium">Settings</span>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

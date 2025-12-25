@@ -1,139 +1,261 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Algeria Telecom Admin Login</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-<script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#00a651", // The vibrant green
-                        secondary: "#1a468c", // The deep blue
-                        "secondary-dark": "#0f2b5a",
-                        "background-light": "#f3f4f6",
-                        "background-dark": "#111827",
-                        "card-light": "#ffffff",
-                        "card-dark": "#1f2937",
-                        "input-border-light": "#e5e7eb",
-                        "input-border-dark": "#374151",
-                        "text-main-light": "#1f2937",
-                        "text-main-dark": "#f9fafb",
-                        "text-sub-light": "#6b7280",
-                        "text-sub-dark": "#9ca3af",
-                    },
-                    fontFamily: {
-                        display: ["Inter", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.5rem",
-                    },
-                    backgroundImage: {
-                        'hero-pattern': "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
-                    }
-                },
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Algeria Telecom Admin Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#00a651", // The vibrant green
+              secondary: "#1a468c", // The deep blue
+              "secondary-dark": "#0f2b5a",
+              "background-light": "#f3f4f6",
+              "background-dark": "#111827",
+              "card-light": "#ffffff",
+              "card-dark": "#1f2937",
+              "input-border-light": "#e5e7eb",
+              "input-border-dark": "#374151",
+              "text-main-light": "#1f2937",
+              "text-main-dark": "#f9fafb",
+              "text-sub-light": "#6b7280",
+              "text-sub-dark": "#9ca3af",
             },
-        };
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+            backgroundImage: {
+              "hero-pattern":
+                "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+            },
+          },
+        },
+      };
     </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-</head>
-<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex items-center justify-center p-4 selection:bg-primary selection:text-white transition-colors duration-300">
-<div class="fixed inset-0 z-0 opacity-10 dark:opacity-5 pointer-events-none">
-<svg class="h-full w-full text-secondary dark:text-secondary-dark" fill="currentColor" preserveAspectRatio="none" viewBox="0 0 100 100">
-<path d="M0 100 C 20 0 50 0 100 100 Z"></path>
-</svg>
-</div>
-<div class="relative z-10 w-full max-w-sm mx-auto">
-<div class="flex flex-col items-center mb-10">
-<img alt="Algeria Telecom Logo" class="h-16 w-auto object-contain mb-5" src="/img/Logo_Algérie_Télécom.svg"/>
-<h1 class="sr-only">Algeria Telecom</h1>
-<p class="text-secondary dark:text-gray-200 font-medium text-lg tracking-wide bg-white/50 dark:bg-black/20 px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">Administrative Portal</p>
-</div>
-<div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden relative">
-<div class="h-2 bg-gradient-to-r from-secondary to-primary w-full"></div>
-<div class="p-8">
-<h2 class="text-xl font-semibold text-text-main-light dark:text-text-main-dark mb-6 text-center">Login</h2>
-<form action="/auth/login" method="POST" class="space-y-6" >
-<div class="space-y-2">
-<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark" for="email">
-                        Email or Username
-                    </label>
-<div class="relative rounded-md shadow-sm">
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-<span class="material-icons text-gray-400 text-xl">person</span>
-</div>
-<input class="block w-full pl-10 pr-3 py-3 border-input-border-light dark:border-input-border-dark dark:bg-gray-800 dark:text-white rounded-lg focus:ring-primary focus:border-primary sm:text-sm transition-colors duration-200 placeholder-gray-400" id="email" name="email" placeholder="admin@algerietelecom.dz" type="text"/>
-</div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between items-center">
-<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark" for="password">
-                            Password
-                        </label>
-<a class="text-xs font-medium text-primary hover:text-green-600 dark:hover:text-green-400 transition-colors" href="#">
-                            Forgot password?
-                        </a>
-</div>
-<div class="relative rounded-md shadow-sm">
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-<span class="material-icons text-gray-400 text-xl">lock</span>
-</div>
-<input class="block w-full pl-10 pr-10 py-3 border-input-border-light dark:border-input-border-dark dark:bg-gray-800 dark:text-white rounded-lg focus:ring-primary focus:border-primary sm:text-sm transition-colors duration-200 placeholder-gray-400" id="password" name="password" placeholder="••••••••" type="password"/>
-<div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onclick="togglePassword()">
-<span class="material-icons text-gray-400 text-xl hover:text-gray-600 dark:hover:text-gray-300" id="toggleIcon">visibility_off</span>
-</div>
-</div>
-</div>
-<div class="flex items-center">
-<input class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700" id="remember-me" name="remember-me" type="checkbox"/>
-<label class="ml-2 block text-sm text-text-sub-light dark:text-text-sub-dark" for="remember-me">
-                        Remember me
-                    </label>
-</div>
-<button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform active:scale-95" type="submit">
-                    Sign In
-                </button>
-</form>
-<div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
-<p class="text-xs text-text-sub-light dark:text-text-sub-dark">
-                    Having trouble accessing the system? <br/>
-<a class="font-medium text-secondary dark:text-blue-400 hover:underline" href="#">Contact IT Support</a>
-</p>
-</div>
-</div>
-</div>
-<div class="mt-8 text-center opacity-60">
-<p class="text-[10px] uppercase tracking-widest text-text-sub-light dark:text-text-sub-dark font-semibold">
-            © 2024 Algérie Télécom
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex items-center justify-center p-4 selection:bg-primary selection:text-white transition-colors duration-300"
+  >
+    <div
+      class="fixed inset-0 z-0 opacity-10 dark:opacity-5 pointer-events-none"
+    >
+      <svg
+        class="h-full w-full text-secondary dark:text-secondary-dark"
+        fill="currentColor"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 100"
+      >
+        <path d="M0 100 C 20 0 50 0 100 100 Z"></path>
+      </svg>
+    </div>
+    <div class="relative z-10 w-full max-w-sm mx-auto">
+      <div class="flex flex-col items-center mb-10">
+        <img
+          alt="Algeria Telecom Logo"
+          class="h-16 w-auto object-contain mb-5"
+          src="/img/Logo_Algérie_Télécom.svg"
+        />
+        <h1 class="sr-only">Algeria Telecom</h1>
+        <p
+          class="text-secondary dark:text-gray-200 font-medium text-lg tracking-wide bg-white/50 dark:bg-black/20 px-4 py-1 rounded-full backdrop-blur-sm border border-white/20"
+        >
+          Administrative Portal
         </p>
-</div>
-</div>
-<button class="fixed top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" onclick="document.documentElement.classList.toggle('dark')">
-<span class="material-icons dark:hidden">dark_mode</span>
-<span class="material-icons hidden dark:block">light_mode</span>
-</button>
+      </div>
+      <div
+        class="bg-card-light dark:bg-card-dark rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden relative"
+      >
+        <div
+          class="h-2 bg-gradient-to-r from-secondary to-primary w-full"
+        ></div>
+        <div class="p-8">
+          <h2
+            class="text-xl font-semibold text-text-main-light dark:text-text-main-dark mb-6 text-center"
+          >
+            Login
+          </h2>
+          <form action="/auth/login" method="POST" class="space-y-6">
+            <div class="space-y-2">
+              <label
+                class="block text-sm font-medium text-text-main-light dark:text-text-main-dark"
+                for="email"
+              >
+                Email or Username
+              </label>
+              <div class="relative rounded-md shadow-sm">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <span class="material-icons text-gray-400 text-xl"
+                    >person</span
+                  >
+                </div>
+                <input
+                  class="block w-full pl-10 pr-3 py-3 border-input-border-light dark:border-input-border-dark dark:bg-gray-800 dark:text-white rounded-lg focus:ring-primary focus:border-primary sm:text-sm transition-colors duration-200 placeholder-gray-400"
+                  id="email"
+                  name="email"
+                  placeholder="admin@algerietelecom.dz"
+                  type="text"
+                />
+              </div>
+            </div>
+            <!-- this input for b0t || t001s detection added by AT  -->
+            <div
+              class="space-y-2 visually-hidden-trap absolute -left-[9999px] -top-[9999px] opacity-0 w-0 h-0 overflow-hidden pointer-events-none"
+              aria-hidden="true"
+            >
+              <label
+                for="middle_name"
+                class="block text-sm font-medium text-gray-400"
+                >Middle Name</label
+              >
+              <input
+                type="text"
+                name="middle_name"
+                id="middle_name"
+                tabindex="-1"
+                autocomplete="off"
+                placeholder="Optional"
+                class="block w-full px-3 py-3 border rounded-lg"
+              />
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <label
+                  class="block text-sm font-medium text-text-main-light dark:text-text-main-dark"
+                  for="password"
+                >
+                  Password
+                </label>
+                <a
+                  class="text-xs font-medium text-primary hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                  href="#"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <div class="relative rounded-md shadow-sm">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <span class="material-icons text-gray-400 text-xl">lock</span>
+                </div>
+                <input
+                  class="block w-full pl-10 pr-10 py-3 border-input-border-light dark:border-input-border-dark dark:bg-gray-800 dark:text-white rounded-lg focus:ring-primary focus:border-primary sm:text-sm transition-colors duration-200 placeholder-gray-400"
+                  id="password"
+                  name="password"
+                  placeholder="••••••••"
+                  type="password"
+                />
+                <div
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onclick="togglePassword()"
+                >
+                  <span
+                    class="material-icons text-gray-400 text-xl hover:text-gray-600 dark:hover:text-gray-300"
+                    id="toggleIcon"
+                    >visibility_off</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <input
+                class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+              />
+              <label
+                class="ml-2 block text-sm text-text-sub-light dark:text-text-sub-dark"
+                for="remember-me"
+              >
+                Remember me
+              </label>
+            </div>
+            <button
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform active:scale-95"
+              type="submit"
+            >
+              Sign In
+            </button>
+          </form>
+          <div
+            class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center"
+          >
+            <p class="text-xs text-text-sub-light dark:text-text-sub-dark">
+              Having trouble accessing the system? <br />
+              <a
+                class="font-medium text-secondary dark:text-blue-400 hover:underline"
+                href="#"
+                >Contact IT Support</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 text-center opacity-60">
+        <p
+          class="text-[10px] uppercase tracking-widest text-text-sub-light dark:text-text-sub-dark font-semibold"
+        >
+          © 2026 Algérie Télécom
+        </p>
+      </div>
+    </div>
+    <button
+      class="fixed top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+      onclick="document.documentElement.classList.toggle('dark')"
+    >
+      <span class="material-icons dark:hidden">dark_mode</span>
+      <span class="material-icons hidden dark:block">light_mode</span>
+    </button>
 
-<script>
-function togglePassword() {
-    const passwordInput = document.getElementById('password');
-    const toggleIcon = document.getElementById('toggleIcon');
-    
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleIcon.textContent = 'visibility';
-    } else {
-        passwordInput.type = 'password';
-        toggleIcon.textContent = 'visibility_off';
-    }
-}
-</script>
+    <script>
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("toggleIcon");
 
-</body></html>
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.textContent = "visibility";
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.textContent = "visibility_off";
+        }
+      }
+    </script>
+    <script>
+      // Check for login errors on page load
+      const errorMsg = localStorage.getItem("login_error");
+      if (errorMsg) {
+        const container = document.querySelector("form");
+        const errorDiv = document.createElement("div");
+        errorDiv.className =
+          "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm";
+        errorDiv.innerHTML = errorMsg;
+        container.prepend(errorDiv);
+        localStorage.removeItem("login_error"); // Clear it after showing
+      }
+    </script>
+  </body>
+</html>
