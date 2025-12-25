@@ -1,0 +1,2 @@
+- Enhance the logger functionality
+- Add a SSH service 

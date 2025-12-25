@@ -1,12 +1,16 @@
 import express from 'express';
 import fs from 'fs';
 import { deceptionLayer } from './src/middleware/deceiver.js';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './src/routes/auth.js'
+import adminRoutes from './src/routes/admin.js';
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url)) // return the path of the current file
 const app = express();
+
 const HOST = '0.0.0.0'
 const PORT = 80;
 
@@ -14,9 +18,13 @@ if (!fs.existsSync('./logs')) fs.mkdirSync('./logs');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser('at-secret-2025')); // Use a secret for "signed" cookies
+app.disable('etag');
 app.use(deceptionLayer); // apply the "lie" to every request
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/auth', authRoutes)
+app.use('/img', express.static(path.join(__dirname, 'public/img'))); // express.static tells express if the user ask for a file that exists in /pucblic/img folder just give it to them auto.
+app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 
 // --- routes ---

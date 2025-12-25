@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,9 +14,13 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^17.2.3",
+    "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
     "lowdb": "^7.0.1",
     "splunk-logging": "^0.11.1",
     "user-agent-parse": "^1.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
