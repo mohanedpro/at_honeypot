@@ -15,7 +15,7 @@ if (!fs.existsSync('./logs')) fs.mkdirSync('./logs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(deceptionLayer); // apply the "lie" to every request
-app.use('/img', express.static(path.join(__dirname, 'public/img'))); // express.static tells express if the user ask for a file that exists in /pucblic/img folder just give it to them auto.
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', authRoutes)
 
 

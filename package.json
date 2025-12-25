@@ -12,8 +12,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "lowdb": "^7.0.1",
+    "splunk-logging": "^0.11.1",
     "user-agent-parse": "^1.0.8"
   }
 }
