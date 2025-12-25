@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(cookieParser('at-secret-2025')); // Use a secret for "signed" cookies
 app.disable('etag');
 app.use(deceptionLayer); // apply the "lie" to every request
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img'))); // express.static tells express if the user ask for a file that exists in /pucblic/img folder just give it to them auto.
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
