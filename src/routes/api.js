@@ -67,4 +67,25 @@ router.get('/employees/:id', (req, res) => {
   }
 })
 
+router.get('/alert', (req, res) => {
+  const {user, comp} = req.query;
+  const attackerIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+  const alertMessage = `
+[!!!] HONEYTOKEN TRIGGERED [!!!]
+--------------------------------
+Source IP: ${attackerIp}
+Local User: ${user || 'Unknown'}
+Computer: ${comp || 'Unknown'}
+User Agent: ${req.headers['user-agent']}
+Timestamp: ${new Date().toLocaleString()}
+--------------------------------
+    `;
+
+  // i will append this to src/logs/activity.log
+  console.log(alertMessage);
+
+  res.sendStatus(204);
+})
+
 export default router;

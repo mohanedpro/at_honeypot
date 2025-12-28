@@ -99,8 +99,10 @@
 </div>
 <div class="flex items-center gap-3 w-full md:w-auto">
 <button class="flex-1 md:flex-none bg-at-green hover:bg-green-700 text-white rounded-xl py-2.5 px-5 flex items-center justify-center gap-2 shadow-sm shadow-green-900/10 transition-all active:scale-95">
-<span class="material-symbols-outlined text-[20px]">download</span>
-<span class="text-sm font-semibold whitespace-nowrap">Download all data (.xlsm)</span>
+<a href="/admin/download-data" class="flex-1 md:flex-none bg-at-green hover:bg-green-700 text-white rounded-xl py-2.5 px-5 flex items-center justify-center gap-2 shadow-sm shadow-green-900/10 transition-all active:scale-95">
+    <span class="material-symbols-outlined text-[20px]">download</span>
+    <span class="text-sm font-semibold whitespace-nowrap">Download all data (.xlsm)</span>
+</a>
 </button>
 <div class="h-8 w-px bg-slate-300 dark:bg-slate-700 mx-1 hidden md:block"></div>
 <button class="bg-white dark:bg-surface-dark text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl px-4 py-2.5 flex items-center gap-2 shadow-sm transition-colors text-sm font-medium">
@@ -131,6 +133,7 @@
 </tr>
 </thead>
 <tbody id="employeesTableBody" class="bg-surface-light dark:bg-surface-dark divide-y divide-slate-200 dark:divide-slate-700">
+  
 <!-- Loading state -->
 <tr>
 <td colspan="8" class="px-6 py-12 text-center">
@@ -255,7 +258,10 @@ function renderEmployees(employees) {
         </td>
       </tr>
     `;
-  }).join('');
+  }).join('') + 
+  `<tr class="bg-slate-50/50 dark:bg-slate-800/20"> 
+    <td class="px-6 py-8 text-center text-sm text-slate-400 italic" colspan="8"> Showing 16 of 150 employees. Scroll for more...</td> 
+  </tr>`;
 }
 
 // Show error message
