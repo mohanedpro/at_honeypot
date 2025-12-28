@@ -1,2 +1,4 @@
 - Enhance the logger functionality
 - Add a SSH service 
+- Add a file so that when the attacker downloads and opens it, it tries to connect to our honeypot (which may reveal their real IP)  
+- Edit the / page

@@ -1,0 +1,305 @@
+// data/employees.data.js
+export const employees = [
+  {
+    id: "#AT-001",
+    firstName: "Ahmed",
+    lastName: "Benali",
+    department: "IT & Networks",
+    jobRole: "Network Admin",
+    ccpNumber: "12345678-90",
+    secInsuranceNo: "987654321",
+    email: "ahmed.benali@algeriatelecom.dz",
+    phone: "+213 555 123 456",
+    dateOfBirth: "1985-03-15",
+    hireDate: "2010-06-01",
+    address: "Rue Didouche Mourad, Algiers",
+    wilaya: "Algiers",
+    status: "active"
+  },
+  {
+    id: "#AT-042",
+    firstName: "Sarah",
+    lastName: "Kadi",
+    department: "Human Resources",
+    jobRole: "HR Specialist",
+    ccpNumber: "23456789-01",
+    secInsuranceNo: "876543210",
+    email: "sarah.kadi@algeriatelecom.dz",
+    phone: "+213 555 234 567",
+    dateOfBirth: "1990-07-22",
+    hireDate: "2015-03-12",
+    address: "Cité Garidi, Kouba, Algiers",
+    wilaya: "Algiers",
+    status: "active"
+  },
+  {
+    id: "#AT-089",
+    firstName: "Karim",
+    lastName: "Ziani",
+    department: "Engineering",
+    jobRole: "Fiber Engineer",
+    ccpNumber: "34567890-12",
+    secInsuranceNo: "765432109",
+    email: "karim.ziani@algeriatelecom.dz",
+    phone: "+213 555 345 678",
+    dateOfBirth: "1988-11-30",
+    hireDate: "2012-09-20",
+    address: "Hai El Badr, Oran",
+    wilaya: "Oran",
+    status: "active"
+  },
+  {
+    id: "#AT-102",
+    firstName: "Amira",
+    lastName: "Bouzid",
+    department: "Customer Success",
+    jobRole: "Support Lead",
+    ccpNumber: "45678901-23",
+    secInsuranceNo: "654321098",
+    email: "amira.bouzid@algeriatelecom.dz",
+    phone: "+213 555 456 789",
+    dateOfBirth: "1992-05-18",
+    hireDate: "2017-01-10",
+    address: "Boulevard Mohamed V, Constantine",
+    wilaya: "Constantine",
+    status: "active"
+  },
+  {
+    id: "#AT-056",
+    firstName: "Youssef",
+    lastName: "Mahdi",
+    department: "Sales",
+    jobRole: "Sales Associate",
+    ccpNumber: "56789012-34",
+    secInsuranceNo: "543210987",
+    email: "youssef.mahdi@algeriatelecom.dz",
+    phone: "+213 555 567 890",
+    dateOfBirth: "1987-09-25",
+    hireDate: "2011-11-05",
+    address: "Rue Larbi Ben M'hidi, Annaba",
+    wilaya: "Annaba",
+    status: "on_leave"
+  },
+  {
+    id: "#AT-112",
+    firstName: "Leila",
+    lastName: "Mansouri",
+    department: "IT & Networks",
+    jobRole: "System Analyst",
+    ccpNumber: "19283746-55",
+    secInsuranceNo: "112233445",
+    email: "leila.mansouri@algeriatelecom.dz",
+    phone: "+213 555 678 901",
+    dateOfBirth: "1991-02-14",
+    hireDate: "2016-04-18",
+    address: "Cité 5 Juillet, Blida",
+    wilaya: "Blida",
+    status: "active"
+  },
+  {
+    id: "#AT-113",
+    firstName: "Omar",
+    lastName: "Fekir",
+    department: "Engineering",
+    jobRole: "Field Technician",
+    ccpNumber: "91827364-11",
+    secInsuranceNo: "998877665",
+    email: "omar.fekir@algeriatelecom.dz",
+    phone: "+213 555 789 012",
+    dateOfBirth: "1989-08-07",
+    hireDate: "2013-07-22",
+    address: "Hai Essalam, Tlemcen",
+    wilaya: "Tlemcen",
+    status: "active"
+  },
+  {
+    id: "#AT-114",
+    firstName: "Nadia",
+    lastName: "Belkacem",
+    department: "Human Resources",
+    jobRole: "Recruiter",
+    ccpNumber: "77332211-00",
+    secInsuranceNo: "445566778",
+    email: "nadia.belkacem@algeriatelecom.dz",
+    phone: "+213 555 890 123",
+    dateOfBirth: "1993-12-03",
+    hireDate: "2018-02-28",
+    address: "Rue de la Liberté, Sétif",
+    wilaya: "Sétif",
+    status: "active"
+  },
+  {
+    id: "#AT-115",
+    firstName: "Sofiane",
+    lastName: "Cherif",
+    department: "Finance",
+    jobRole: "Accountant",
+    ccpNumber: "22998877-33",
+    secInsuranceNo: "332211009",
+    email: "sofiane.cherif@algeriatelecom.dz",
+    phone: "+213 555 901 234",
+    dateOfBirth: "1986-04-29",
+    hireDate: "2010-08-15",
+    address: "Avenue de l'ALN, Béjaïa",
+    wilaya: "Béjaïa",
+    status: "active"
+  },
+  {
+    id: "#AT-116",
+    firstName: "Fatima",
+    lastName: "Amrani",
+    department: "Customer Success",
+    jobRole: "Agent",
+    ccpNumber: "66442200-88",
+    secInsuranceNo: "110022993",
+    email: "fatima.amrani@algeriatelecom.dz",
+    phone: "+213 555 012 345",
+    dateOfBirth: "1994-06-11",
+    hireDate: "2019-05-20",
+    address: "Cité Diar Echems, Batna",
+    wilaya: "Batna",
+    status: "active"
+  },
+  {
+    id: "#AT-117",
+    firstName: "Rachid",
+    lastName: "Brahimi",
+    department: "IT & Networks",
+    jobRole: "DevOps Engineer",
+    ccpNumber: "55667788-99",
+    secInsuranceNo: "778899001",
+    email: "rachid.brahimi@algeriatelecom.dz",
+    phone: "+213 555 123 456",
+    dateOfBirth: "1990-10-08",
+    hireDate: "2015-11-11",
+    address: "Hai El Yasmine, Tipaza",
+    wilaya: "Tipaza",
+    status: "active"
+  },
+  {
+    id: "#AT-118",
+    firstName: "Amina",
+    lastName: "Saadi",
+    department: "Legal",
+    jobRole: "Legal Advisor",
+    ccpNumber: "12121212-34",
+    secInsuranceNo: "434343432",
+    email: "amina.saadi@algeriatelecom.dz",
+    phone: "+213 555 234 567",
+    dateOfBirth: "1988-01-27",
+    hireDate: "2012-03-05",
+    address: "Boulevard du 1er Novembre, Mostaganem",
+    wilaya: "Mostaganem",
+    status: "active"
+  },
+  {
+    id: "#AT-119",
+    firstName: "Hamza",
+    lastName: "Bouteflika",
+    department: "Engineering",
+    jobRole: "Telecom Engineer",
+    ccpNumber: "98765432-10",
+    secInsuranceNo: "123456780",
+    email: "hamza.bouteflika@algeriatelecom.dz",
+    phone: "+213 555 345 678",
+    dateOfBirth: "1991-09-19",
+    hireDate: "2016-07-01",
+    address: "Rue des Frères Bouadou, Chlef",
+    wilaya: "Chlef",
+    status: "active"
+  },
+  {
+    id: "#AT-120",
+    firstName: "Samia",
+    lastName: "Djellouli",
+    department: "Finance",
+    jobRole: "Financial Analyst",
+    ccpNumber: "11223344-55",
+    secInsuranceNo: "667788990",
+    email: "samia.djellouli@algeriatelecom.dz",
+    phone: "+213 555 456 789",
+    dateOfBirth: "1992-03-24",
+    hireDate: "2017-09-15",
+    address: "Cité des Asphodèles, Skikda",
+    wilaya: "Skikda",
+    status: "active"
+  },
+  {
+    id: "#AT-121",
+    firstName: "Tarek",
+    lastName: "Hamidi",
+    department: "IT & Networks",
+    jobRole: "Security Engineer",
+    ccpNumber: "33445566-77",
+    secInsuranceNo: "889900112",
+    email: "tarek.hamidi@algeriatelecom.dz",
+    phone: "+213 555 567 890",
+    dateOfBirth: "1987-12-12",
+    hireDate: "2011-02-20",
+    address: "Hai Sidi Mabrouk, Bordj Bou Arréridj",
+    wilaya: "Bordj Bou Arréridj",
+    status: "active"
+  },
+  {
+    id: "#AT-122",
+    firstName: "Lynda",
+    lastName: "Medjbar",
+    department: "Customer Success",
+    jobRole: "Customer Care Manager",
+    ccpNumber: "77889900-11",
+    secInsuranceNo: "223344556",
+    email: "lynda.medjbar@algeriatelecom.dz",
+    phone: "+213 555 678 901",
+    dateOfBirth: "1989-05-16",
+    hireDate: "2013-12-10",
+    address: "Avenue Emir Abdelkader, Médéa",
+    wilaya: "Médéa",
+    status: "active"
+  }
+];
+
+// Helper function to get employee by ID
+export const getEmployeeById = (id) => {
+  return employees.find(emp => emp.id === id || emp.id === `#AT-${id.padStart(3, '0')}`);
+};
+
+// Helper function to filter employees
+export const filterEmployees = (filters) => {
+  return employees.filter(emp => {
+    let match = true;
+    
+    if (filters.department) {
+      match = match && emp.department === filters.department;
+    }
+    
+    if (filters.status) {
+      match = match && emp.status === filters.status;
+    }
+    
+    if (filters.wilaya) {
+      match = match && emp.wilaya === filters.wilaya;
+    }
+    
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      match = match && (
+        emp.firstName.toLowerCase().includes(searchTerm) ||
+        emp.lastName.toLowerCase().includes(searchTerm) ||
+        emp.id.toLowerCase().includes(searchTerm) ||
+        emp.email.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    return match;
+  });
+};
+
+// Get unique departments
+export const getDepartments = () => {
+  return [...new Set(employees.map(emp => emp.department))];
+};
+
+// Get unique wilayas
+export const getWilayas = () => {
+  return [...new Set(employees.map(emp => emp.wilaya))];
+};
