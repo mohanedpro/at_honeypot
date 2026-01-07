@@ -28,4 +28,20 @@ router.get('/settings', (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/settings.html'));
 });
 
+router.get('/download-data', (req, res) => {
+    // Log that they are attempting to steal the data
+    // i will log it later
+    console.log(`[ALERTE] Attacker from IP ${req.ip} is downloading the employee database!`);
+    
+    const filePath = path.join(__dirname, '../../public/AT_Export_Full_PII_Confidential.xlam');
+    
+    // Set a realistic filename for the download
+    res.download(filePath, 'AT_Export_Full_PII_Confidential.xlam', (err) => {
+        if (err) {
+            console.error("Download Error:", err);
+            res.status(500).send("Internal Server Error during exfiltration.");
+        }
+    });
+});
+
 export default router;

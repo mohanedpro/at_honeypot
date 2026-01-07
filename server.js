@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './src/routes/auth.js'
 import adminRoutes from './src/routes/admin.js';
+import apiRoutes from './src/routes/api.js'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url)) // return the path of the current file
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img'))); // express.static tells express if the user ask for a file that exists in /pucblic/img folder just give it to them auto.
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
+app.use('/api/v1', apiRoutes);
 
 
 // --- routes ---
