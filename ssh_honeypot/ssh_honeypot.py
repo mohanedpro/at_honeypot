@@ -26,6 +26,14 @@ CMD_LOG = LOG_DIR / "cmd_audits.log"
 SERVER_KEY = KEY_DIR / "server.key"
 
 # ======================
+# KEY CODES
+# ======================
+
+BACKSPACE = b"\x7f"
+CTRL_L = b"\x0c"
+ENTER = b"\r"
+
+# ======================
 # HOST KEY
 # ======================
 
@@ -68,10 +76,12 @@ class HoneypotServer(paramiko.ServerInterface):
 
     def check_auth_password(self, username, password):
         creds_logger.info(f"{self.client_ip}, {username}, {password}")
-        return paramiko.AUTH_SUCCESSFUL  # honeypot accepts all
+        return paramiko.AUTH_SUCCESSFUL
 
     def check_channel_request(self, kind, chanid):
-        return paramiko.OPEN_SUCCEEDED if kind == "session" else paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
+        if kind == "session":
+            return paramiko.OPEN_SUCCEEDED
+        return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
 
     def check_channel_shell_request(self, channel):
         self.event.set()
@@ -96,7 +106,7 @@ FILES = {
     "/etc/passwd": (
         "root:x:0:0:root:/root:/bin/bash\n"
         "admin:x:1000:1000:admin:/home/admin:/bin/bash\n"
-        "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin"
+        "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n"
     )
 }
 
@@ -106,8 +116,13 @@ FILES = {
 
 def handle_command(cmd, cwd):
 
+    cmd = cmd.strip()
+
     if cmd in ("exit", "logout"):
         return "__exit__", cwd
+
+    if cmd in ("clear", "cls"):
+        return "__clear__", cwd
 
     if cmd == "pwd":
         return cwd, cwd
@@ -115,8 +130,14 @@ def handle_command(cmd, cwd):
     if cmd == "whoami":
         return "admin", cwd
 
+    if cmd == "id":
+        return "uid=1000(admin) gid=1000(admin) groups=1000(admin)", cwd
+
+    if cmd == "uname -a":
+        return "Linux ubuntu 5.15.0-91-generic x86_64 GNU/Linux", cwd
+
     if cmd.startswith("cd"):
-        parts = cmd.split()
+        parts = cmd.split(maxsplit=1)
         if len(parts) == 1:
             return "", "/home/admin"
 
@@ -126,13 +147,14 @@ def handle_command(cmd, cwd):
 
         if new_dir in FILESYSTEM:
             return "", new_dir
+
         return f"cd: no such file or directory: {target}", cwd
 
     if cmd == "ls":
         return "  ".join(FILESYSTEM.get(cwd, [])), cwd
 
     if cmd.startswith("cat"):
-        parts = cmd.split()
+        parts = cmd.split(maxsplit=1)
         if len(parts) < 2:
             return "cat: missing file operand", cwd
 
@@ -142,25 +164,23 @@ def handle_command(cmd, cwd):
 
         if target in FILES:
             return FILES[target], cwd
-        return f"cat: {target}: No such file", cwd
 
-    if cmd.startswith(("wget", "curl")):
-        return "Saving to: payload.sh", cwd
+        return f"cat: {target}: No such file or directory", cwd
 
     return f"{cmd}: command not found", cwd
 
 # ======================
-# FAKE SHELL
+# FAKE SHELL (FIXED)
 # ======================
 
 def fake_shell(channel, client_ip):
     cwd = "/home/admin"
     prompt_user = "admin@ubuntu"
+    buffer = b""
 
     def prompt():
         return f"{prompt_user}:{cwd}$ ".encode()
 
-    buffer = b""
     channel.send(prompt())
 
     while True:
@@ -169,24 +189,47 @@ def fake_shell(channel, client_ip):
             if not char:
                 break
 
-            channel.send(char)
-            buffer += char
-
-            if char == b"\r":
-                cmd = buffer.strip().decode(errors="ignore")
+            # ENTER
+            if char == ENTER:
+                channel.send(b"\r\n")
+                cmd = buffer.decode(errors="ignore")
                 buffer = b""
-                time.sleep(0.15)
 
+                time.sleep(0.12)
                 cmd_logger.info(f"{client_ip} | {cwd} | {cmd}")
 
                 output, cwd = handle_command(cmd, cwd)
 
                 if output == "__exit__":
-                    channel.send(b"\r\nlogout\r\n")
+                    channel.send(b"logout\r\n")
                     break
 
-                channel.send(b"\r\n" + output.encode() + b"\r\n")
+                if output == "__clear__":
+                    channel.send(b"\033[2J\033[H")
+                else:
+                    channel.send(output.encode())
+
+                channel.send(b"\r\n")
                 channel.send(prompt())
+                continue
+
+            # BACKSPACE
+            if char == BACKSPACE:
+                if buffer:
+                    buffer = buffer[:-1]
+                    channel.send(b"\b \b")
+                continue
+
+            # CTRL + L
+            if char == CTRL_L:
+                buffer = b""
+                channel.send(b"\033[2J\033[H")
+                channel.send(prompt())
+                continue
+
+            # NORMAL CHAR
+            buffer += char
+            channel.send(char)
 
         except Exception:
             break
@@ -243,7 +286,11 @@ def start_honeypot(host, port):
 
     while True:
         client, addr = sock.accept()
-        threading.Thread(target=handle_client, args=(client, addr), daemon=True).start()
+        threading.Thread(
+            target=handle_client,
+            args=(client, addr),
+            daemon=True
+        ).start()
 
 # ======================
 # MAIN
