@@ -29,11 +29,6 @@ app.use('/admin', adminRoutes);
 app.use('/api/v1', apiRoutes);
 
 
-// --- routes ---
-app.get('/', (req, res) => {
-  res.send('<h1>algeria telecom HR logistics - Portal V2.1</h1> <p> Internal Use Only.</p>')
-})
-
 app.listen(PORT, HOST, () => {
   console.log(`[SYSTEM] Honeypot live on  http://${HOST}:${PORT}`)
 })
