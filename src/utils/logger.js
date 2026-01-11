@@ -53,7 +53,7 @@ export const logInteraction = async (req, type = 'INTERACTION') => {
 
     // 1. LOCAL LOGGING: Append the event to a local file for backup
     try {
-        fs.appendFileSync('./logs/activity.log', JSON.stringify(logEntry) + "\n");
+        fs.appendFileSync('./logs/web/activity.log', JSON.stringify(logEntry) + "\n");
     } catch (err) {
         console.error("[Local Logger] Error saving to file:", err.message);
     }
