@@ -6,305 +6,229 @@ import paramiko
 import threading
 import socket
 import time
+import posixpath
 from pathlib import Path
 
-# ======================
-# CONFIG
-# ======================
+# CONFIGURATION
 
 SSH_BANNER = "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.1"
-
 BASE_DIR = Path(__file__).parent
-LOG_DIR = BASE_DIR / "log_files"
+LOG_DIR = BASE_DIR / "logs"
 KEY_DIR = BASE_DIR / "static"
 
 LOG_DIR.mkdir(exist_ok=True)
 KEY_DIR.mkdir(exist_ok=True)
 
-CREDS_LOG = LOG_DIR / "creds_audits.log"
-CMD_LOG = LOG_DIR / "cmd_audits.log"
-SERVER_KEY = KEY_DIR / "server.key"
+AUTH_LOG = LOG_DIR / "auth.log"
+CMD_LOG = LOG_DIR / "session.log"
+SERVER_KEY_PATH = KEY_DIR / "server.key"
 
-# ======================
-# KEY CODES
-# ======================
+# LOGGING SETUP
 
-BACKSPACE = b"\x7f"
-CTRL_L = b"\x0c"
-ENTER = b"\r"
+def setup_logger(name, log_file):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    handler = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=5)
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(message)s"))
+    logger.addHandler(handler)
+    return logger
 
-# ======================
-# HOST KEY
-# ======================
+creds_logger = setup_logger("AUTH", AUTH_LOG)
+cmd_logger = setup_logger("CMDS", CMD_LOG)
 
-if SERVER_KEY.exists():
-    HOST_KEY = paramiko.RSAKey(filename=str(SERVER_KEY))
+# HOST KEY MANAGEMENT
+
+if SERVER_KEY_PATH.exists():
+    HOST_KEY = paramiko.RSAKey(filename=str(SERVER_KEY_PATH))
 else:
     HOST_KEY = paramiko.RSAKey.generate(2048)
-    HOST_KEY.write_private_key_file(str(SERVER_KEY))
+    HOST_KEY.write_private_key_file(str(SERVER_KEY_PATH))
 
-# ======================
-# LOGGING
-# ======================
+# MOCK SYSTEM ENGINE
 
-fmt = logging.Formatter("%(asctime)s | %(message)s")
+class MockSystem:
+    def __init__(self):
+        self.cwd = "/home/admin"
+        self.user = "admin"
+        self.is_root = False
+        self.hostname = "ubuntu"
+        
+        # Virtual Filesystem
+        self.directories = ["/", "/bin", "/etc", "/home", "/home/admin", "/root", "/var", "/tmp"]
+        self.files = {
+            "/etc/passwd": "root:x:0:0:root:/root:/bin/bash\nadmin:x:1000:1000::/home/admin:/bin/bash",
+            "/etc/issue": "Ubuntu 22.04.3 LTS \n",
+            "/home/admin/.bashrc": "PS1='${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '",
+        }
 
-creds_logger = logging.getLogger("CREDS")
-creds_logger.setLevel(logging.INFO)
-creds_handler = RotatingFileHandler(CREDS_LOG, maxBytes=5*1024*1024, backupCount=10)
-creds_handler.setFormatter(fmt)
-creds_logger.addHandler(creds_handler)
+    def get_prompt(self):
+        # Changes $ to # when user is root
+        symbol = "#" if self.is_root else "$"
+        return f"{self.user}@{self.hostname}:{self.cwd}{symbol} "
 
-cmd_logger = logging.getLogger("CMDS")
-cmd_logger.setLevel(logging.INFO)
-cmd_handler = RotatingFileHandler(CMD_LOG, maxBytes=5*1024*1024, backupCount=10)
-cmd_handler.setFormatter(fmt)
-cmd_logger.addHandler(cmd_handler)
+    def execute(self, cmd_line):
+        parts = cmd_line.split()
+        if not parts: return ""
+        
+        cmd = parts[0]
+        args = parts[1:]
 
-# ======================
-# SSH SERVER
-# ======================
+        if cmd in ("exit", "logout"): return "__EXIT__"
+        if cmd == "clear": return "__CLEAR__"
+
+        # Escalation Logic
+        if cmd == "sudo" and len(args) > 0 and args[0] == "su":
+            if self.is_root: return "Already root."
+            return "__ASK_PASS__"
+
+        # Navigation
+        if cmd == "cd":
+            target = args[0] if args else "/home/admin"
+            target = target.replace("~", "/home/admin")
+            new_path = posixpath.normpath(posixpath.join(self.cwd, target))
+            
+            if new_path in self.directories:
+                if new_path == "/root" and not self.is_root:
+                    return "-bash: cd: /root: Permission denied"
+                self.cwd = new_path
+                return ""
+            return f"-bash: cd: {target}: No such file or directory"
+
+        # Identity & System Info
+        if cmd == "whoami": return self.user
+        if cmd == "pwd": return self.cwd
+        if cmd == "id":
+            if self.is_root: return "uid=0(root) gid=0(root) groups=0(root)"
+            return "uid=1000(admin) gid=1000(admin) groups=1000(admin)"
+
+        if cmd == "ls":
+            items = [posixpath.basename(p) for p in self.directories + list(self.files.keys()) 
+                    if posixpath.dirname(p) == self.cwd and p != self.cwd]
+            return "  ".join(sorted(set(items)))
+
+        if cmd == "cat":
+            if not args: return "cat: missing operand"
+            target = posixpath.normpath(posixpath.join(self.cwd, args[0]))
+            return self.files.get(target, f"cat: {args[0]}: No such file or directory")
+
+        return f"{cmd}: command not found"
+
+# SSH SERVER INTERFACE
 
 class HoneypotServer(paramiko.ServerInterface):
+    def __init__(self, client_ip):
+        self.client_ip = client_ip
+        self.auth_attempts = 0
 
-    def __init__(self, ip):
-        self.client_ip = ip
-        self.event = threading.Event()
+    def check_auth_password(self, username, password):
+        self.auth_attempts += 1
+        creds_logger.info(f"LOGIN | IP: {self.client_ip} | User: {username} | Pass: {password}")
+        
+        time.sleep(1.5) # Realism delay
+        # Fail the first attempt to mimic a harder target
+        if self.auth_attempts < 2:
+            return paramiko.AUTH_FAILED
+        return paramiko.AUTH_SUCCESSFUL
 
     def get_allowed_auths(self, username):
         return "password"
 
-    def check_auth_password(self, username, password):
-        creds_logger.info(f"{self.client_ip}, {username}, {password}")
-        return paramiko.AUTH_SUCCESSFUL
-
     def check_channel_request(self, kind, chanid):
-        if kind == "session":
-            return paramiko.OPEN_SUCCEEDED
-        return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
+        return paramiko.OPEN_SUCCEEDED if kind == "session" else paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
 
-    def check_channel_shell_request(self, channel):
-        self.event.set()
-        return True
+    def check_channel_shell_request(self, channel): return True
+    def check_channel_pty_request(self, channel, *args): return True
 
-    def check_channel_pty_request(self, channel, *args):
-        return True
+# TERMINAL HANDLER
 
-# ======================
-# FAKE FILESYSTEM
-# ======================
-
-FILESYSTEM = {
-    "/": ["bin", "boot", "dev", "etc", "home", "lib", "tmp", "usr", "var"],
-    "/etc": ["passwd", "shadow", "ssh"],
-    "/usr": ["bin", "lib", "share"],
-    "/home": ["admin"],
-    "/home/admin": [".bashrc", ".ssh"],
-}
-
-FILES = {
-    "/etc/passwd": (
-        "root:x:0:0:root:/root:/bin/bash\n"
-        "admin:x:1000:1000:admin:/home/admin:/bin/bash\n"
-        "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n"
-    )
-}
-
-# ======================
-# COMMAND HANDLER
-# ======================
-
-def handle_command(cmd, cwd):
-
-    cmd = cmd.strip()
-
-    if cmd in ("exit", "logout"):
-        return "__exit__", cwd
-
-    if cmd in ("clear", "cls"):
-        return "__clear__", cwd
-
-    if cmd == "pwd":
-        return cwd, cwd
-
-    if cmd == "whoami":
-        return "admin", cwd
-
-    if cmd == "id":
-        return "uid=1000(admin) gid=1000(admin) groups=1000(admin)", cwd
-
-    if cmd == "uname -a":
-        return "Linux ubuntu 5.15.0-91-generic x86_64 GNU/Linux", cwd
-
-    if cmd.startswith("cd"):
-        parts = cmd.split(maxsplit=1)
-        if len(parts) == 1:
-            return "", "/home/admin"
-
-        target = parts[1]
-        new_dir = target if target.startswith("/") else f"{cwd}/{target}"
-        new_dir = new_dir.replace("//", "/")
-
-        if new_dir in FILESYSTEM:
-            return "", new_dir
-
-        return f"cd: no such file or directory: {target}", cwd
-
-    if cmd == "ls":
-        return "  ".join(FILESYSTEM.get(cwd, [])), cwd
-
-    if cmd.startswith("cat"):
-        parts = cmd.split(maxsplit=1)
-        if len(parts) < 2:
-            return "cat: missing file operand", cwd
-
-        target = parts[1]
-        target = target if target.startswith("/") else f"{cwd}/{target}"
-        target = target.replace("//", "/")
-
-        if target in FILES:
-            return FILES[target], cwd
-
-        return f"cat: {target}: No such file or directory", cwd
-
-    return f"{cmd}: command not found", cwd
-
-# ======================
-# FAKE SHELL (FIXED)
-# ======================
-
-def fake_shell(channel, client_ip):
-    cwd = "/home/admin"
-    prompt_user = "admin@ubuntu"
-    buffer = b""
-
-    def prompt():
-        return f"{prompt_user}:{cwd}$ ".encode()
-
-    channel.send(prompt())
+def handle_fake_shell(channel, client_ip):
+    system = MockSystem()
+    
+    # Initial Banner
+    banner = "Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-91-generic x86_64)\r\n\r\n"
+    channel.send(banner)
 
     while True:
         try:
-            char = channel.recv(1)
-            if not char:
-                break
-
-            # ENTER
-            if char == ENTER:
-                channel.send(b"\r\n")
-                cmd = buffer.decode(errors="ignore")
-                buffer = b""
-
-                time.sleep(0.12)
-                cmd_logger.info(f"{client_ip} | {cwd} | {cmd}")
-
-                output, cwd = handle_command(cmd, cwd)
-
-                if output == "__exit__":
-                    channel.send(b"logout\r\n")
-                    break
-
-                if output == "__clear__":
-                    channel.send(b"\033[2J\033[H")
+            channel.send(system.get_prompt())
+            
+            # Read command line with echo
+            line = b""
+            while not line.endswith(b"\r"):
+                char = channel.recv(1)
+                if not char: return
+                if char == b"\x7f": # Backspace
+                    if len(line) > 0:
+                        line = line[:-1]
+                        channel.send(b"\b \b")
                 else:
-                    channel.send(output.encode())
+                    line += char
+                    channel.send(char)
 
-                channel.send(b"\r\n")
-                channel.send(prompt())
-                continue
-
-            # BACKSPACE
-            if char == BACKSPACE:
-                if buffer:
-                    buffer = buffer[:-1]
-                    channel.send(b"\b \b")
-                continue
-
-            # CTRL + L
-            if char == CTRL_L:
-                buffer = b""
-                channel.send(b"\033[2J\033[H")
-                channel.send(prompt())
-                continue
-
-            # NORMAL CHAR
-            buffer += char
-            channel.send(char)
+            channel.send(b"\n")
+            cmd_str = line.decode(errors="ignore").strip()
+            
+            if cmd_str:
+                cmd_logger.info(f"{client_ip} | {system.cwd} | {cmd_str}")
+                response = system.execute(cmd_str)
+                
+                if response == "__EXIT__":
+                    break
+                elif response == "__CLEAR__":
+                    channel.send(b"\033[2J\033[H")
+                elif response == "__ASK_PASS__":
+                    # Silent Password Entry
+                    channel.send(f"[sudo] password for {system.user}: ".encode())
+                    pass_input = b""
+                    while not pass_input.endswith(b"\r"):
+                        p_char = channel.recv(1)
+                        if not p_char: break
+                        pass_input += p_char
+                    
+                    # Log the sudo password
+                    sudo_pass = pass_input.decode(errors="ignore").strip()
+                    cmd_logger.info(f"{client_ip} | SUDO PASS | {sudo_pass}")
+                    
+                    time.sleep(1)
+                    channel.send(b"\r\n")
+                    # Escalate state
+                    system.is_root = True
+                    system.user = "root"
+                    system.cwd = "/root"
+                elif response:
+                    channel.send(response.replace("\n", "\r\n") + "\r\n")
 
         except Exception:
             break
-
     channel.close()
 
-# ======================
-# CLIENT HANDLER
-# ======================
+# NETWORK LISTENER
 
-def handle_client(client, addr):
-    client.settimeout(60)
-    ip = addr[0]
-
-    try:
-        transport = paramiko.Transport(client)
-        transport.local_version = SSH_BANNER
-        transport.add_server_key(HOST_KEY)
-
-        server = HoneypotServer(ip)
-        transport.start_server(server=server)
-
-        channel = transport.accept(20)
-        if channel is None:
-            return
-
-        banner = (
-            "Welcome to Ubuntu 22.04.3 LTS (GNU/Linux x86_64)\r\n"
-            "Last login: Tue Oct 24 09:21:10 2025\r\n\r\n"
-        )
-        channel.send(banner.encode())
-        fake_shell(channel, ip)
-
-    except Exception:
-        pass
-    finally:
-        try:
-            transport.close()
-        except Exception:
-            pass
-        client.close()
-
-# ======================
-# START SERVER
-# ======================
-
-def start_honeypot(host, port):
+def start_server(host="0.0.0.0", port=2222):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((host, port))
     sock.listen(100)
-
-    print(f"[+] SSH honeypot listening on {host}:{port}")
+    print(f"[*] Honeypot listening on {host}:{port}")
 
     while True:
         client, addr = sock.accept()
-        threading.Thread(
-            target=handle_client,
-            args=(client, addr),
-            daemon=True
-        ).start()
+        threading.Thread(target=handle_session, args=(client, addr), daemon=True).start()
 
-# ======================
-# MAIN
-# ======================
+def handle_session(client, addr):
+    try:
+        transport = paramiko.Transport(client)
+        transport.local_version = SSH_BANNER
+        transport.add_server_key(HOST_KEY)
+        server = HoneypotServer(addr[0])
+        transport.start_server(server=server)
+        channel = transport.accept(20)
+        if channel:
+            handle_fake_shell(channel, addr[0])
+    except:
+        pass
+    finally:
+        client.close()
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--host", default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=2222)
-    args = parser.parse_args()
-
-    try:
-        start_honeypot(args.host, args.port)
-    except KeyboardInterrupt:
-        print("\n[!] Honeypot stopped")
+    start_server()
