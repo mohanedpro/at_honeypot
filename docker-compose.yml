@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # The Express Web Server (Honeypot Dashboard/Front)
+  web_honeypot:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    ports:
+      - "80:3000" # Maps localhost:80 to container:3000
+    volumes:
+      - ./logs/web:/usr/src/app/logs # Persists logs on your machine
+    restart: always
+
+  # The Python SSH Honeypot
+  ssh_honeypot:
+    build:
+      context: .
+      dockerfile: docker/ssh/Dockerfile
+    ports:
+      - "2222:2222" # Access via ssh admin@localhost -p 2222
+    volumes:
+      # This connects your local 'logs' folder to the container's 'log_files' folder
+      - ./logs/ssh:/app/log_files
+    restart: always
