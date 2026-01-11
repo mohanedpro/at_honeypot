@@ -30,6 +30,6 @@ app.use('/api/v1', apiRoutes);
 
 
 app.listen(PORT, HOST, () => {
-  console.log(`[SYSTEM] Honeypot live on  http://${HOST}:$80`) // we map port 3000 to 80 on docker
+  console.log(`[SYSTEM] Honeypot live on  http://${HOST}:80`) // we map port 3000 to 80 on docker
 })
 
