@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url)) // return the pat
 const app = express();
 
 const HOST = '0.0.0.0'
-const PORT = 80;
+const PORT = 3000;
 
 if (!fs.existsSync('./logs')) fs.mkdirSync('./logs');
 
@@ -30,6 +30,6 @@ app.use('/api/v1', apiRoutes);
 
 
 app.listen(PORT, HOST, () => {
-  console.log(`[SYSTEM] Honeypot live on  http://${HOST}:${PORT}`)
+  console.log(`[SYSTEM] Honeypot live on  http://${HOST}:$80`) // we map port 3000 to 80 on docker
 })
 

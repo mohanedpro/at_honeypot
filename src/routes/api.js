@@ -1,12 +1,6 @@
 import { Router } from 'express';
 import { logInteraction } from '../utils/logger.js';
-import {
-  employees,
-  getEmployeeById,
-  filterEmployees,
-  getDepartments,
-  getWilayas
-} from '../../data/employees.data.js'
+import { employees } from '../../data/employees.data.js'
 
 
 const router = Router();
