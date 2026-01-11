@@ -44,3 +44,13 @@ The system is configured to save all "attacker" activity directly into the proje
 
   else change the **left-side** number to an unused port in `docker-compose.yml` (e.g `1234:2222`)
 - **Persistence**: If logs do not appear immediately, ensure you have `write` permissions in the project directory.
+
+## Splunk Setup (Required for SIEM features)
+
+To see the logs in a dashboard, you must install [Splunk Enterprise](https://www.splunk.com/en_us/download/splunk-enterprise.html) on your machine.
+
+Enable HTTP Event Collector (HEC) in Splunk settings and create a new Token. 
+
+add your token on `.env` file that you created. 
+
+If Splunk is not installed, the server will still run, but logs will only be saved locally in `.logs/web`.
